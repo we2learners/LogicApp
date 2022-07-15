@@ -1,0 +1,63 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Parse_JSON": {
+                "type": "ParseJson",
+                "inputs": {
+                    "content": "@triggerOutputs()?['body']?['contentData']",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "companyId": {
+                                "type": "string"
+                            },
+                            "eventType": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "runAfter": {}
+            },
+            "HTTP": {
+                "type": "Http",
+                "inputs": {
+                    "method": "POST",
+                    "uri": "https://blueprintapi.azure-api.net/sp/create",
+                    "headers": {
+                        "accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    "body": "@body('Parse_JSON')"
+                },
+                "runAfter": {
+                    "Parse_JSON": [
+                        "Succeeded"
+                    ]
+                }
+            }
+        },
+        "triggers": {
+            "When_messages_are_available_in_a_topic_subscription": {
+                "type": "ServiceProvider",
+                "inputs": {
+                    "parameters": {
+                        "topicName": "@parameters('TOPIC_NAME')",
+                        "subscriptionName": "logicapp",
+                        "isSessionsEnabled": false
+                    },
+                    "serviceProviderConfiguration": {
+                        "connectionName": "serviceBus",
+                        "operationId": "receiveTopicMessages",
+                        "serviceProviderId": "/serviceProviders/serviceBus"
+                    }
+                },
+                "splitOn": "@triggerOutputs()?['body']"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {}
+    },
+    "kind": "Stateful"
+}

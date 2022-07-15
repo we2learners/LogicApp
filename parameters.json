@@ -1,0 +1,6 @@
+{
+  "TOPIC_NAME": {
+    "type": "String",
+    "value": "notification-receive-topic"
+  }
+}

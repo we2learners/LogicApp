@@ -1,0 +1,10 @@
+{
+    "azureLogicAppsStandard.deploySubpath": ".",
+    "azureLogicAppsStandard.projectLanguage": "JavaScript",
+    "azureLogicAppsStandard.projectRuntime": "~3",
+    "debug.internalConsoleOptions": "neverOpen",
+    "azureFunctions.deploySubpath": ".",
+    "azureFunctions.projectLanguage": "JavaScript",
+    "azureFunctions.projectRuntime": "~4",
+    "azureFunctions.suppressProject": true
+}
