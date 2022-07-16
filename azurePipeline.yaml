@@ -60,7 +60,13 @@ stages:
                 echo $(Pipeline.Workspace)
                 cd "$(Pipeline.Workspace)/$(logicAppCIArtifactName)"
                 ls -l
-                
+          
+          - task: AzureKeyVault@2
+            inputs:
+              azureSubscription: 'RnD (71e137e0-0593-45df-adbf-4530fff5092b)'
+              KeyVaultName: 'blueprint-vault'
+              SecretsFilter: 'sbconn'
+              RunAsPreJob: true
           - task: AzureFunctionApp@1
             displayName: 'Deploy logic app workflows'
             inputs:
@@ -68,6 +74,6 @@ stages:
               appType: 'functionapp,workflowapp'
               appName: 'blueprintlogic'
               package: '$(Pipeline.Workspace)/$(logicAppCIArtifactName)/$(Build.BuildId).zip'
-              appSettings: '-SERVICE_BUS_CONN_STRING Endpoint=sb://bpevents.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=3sAm+HXNB2g9C6t4xYOi5YJVhaHHH6f7nnr6UnA1l0Q='
+              appSettings: '-SERVICE_BUS_CONN_STRING $(sbconn)'
               configurationStrings: '-TOPIC_NAME notification-receive-topic -SUBSCRIPTION_NAME logicapp'
               deploymentMethod: 'zipDeploy'
