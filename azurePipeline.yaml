@@ -58,8 +58,11 @@ stages:
               targetType: 'inline'
               script: |
                 # Write your commands here
-                
+                echo $(System.DefaultWorkingDirectory)
                 cd "$(System.DefaultWorkingDirectory)"
+                ls -l
+                echo $(Pipeline.Workspace)
+                cd "$(Pipeline.Workspace)"
                 ls -l
                 
           - task: AzureFunctionApp@1
