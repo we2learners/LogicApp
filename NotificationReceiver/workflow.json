@@ -46,7 +46,7 @@
                         "accept": "application/json",
                         "content-type": "application/x-www-form-urlencoded",
                         "cache-control": "no-cache",
-                        "Authorization": "Basic @{parameters('OKTA_USER')}:@{parameters('OKTA_PASSWORD')}"
+                        "Authorization": "Basic base64(@{parameters('OKTA_USER')}:@{parameters('OKTA_PASSWORD')})"
                     },
                     "body": "'{\"grant_type\":\"client_credentials\"}'",
                     "authentication": {

@@ -5,11 +5,11 @@
   },
   "OKTA_USER": {
     "type": "String",
-    "value": "\"@appsetting('OKTA_CLIENT-ID')\""
+    "value": "\"@appsetting('OKTA-CLIENT-ID')\""
   },
   "OKTA_TOKEN_URL": {
     "type": "String",
-    "value": "\"@appsetting('OKTA_URL')\"/oauth2/default/v1/token"
+    "value": "https://dev-98237100.okta.com/oauth2/default/v1/token"
   },
   "TOPIC_NAME": {
     "type": "String",
