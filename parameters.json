@@ -1,4 +1,16 @@
 {
+  "OKTA_PASSWORD": {
+    "type": "String",
+    "value": "\"@appsetting('OKTA-CLIENT-SECRET')\""
+  },
+  "OKTA_USER": {
+    "type": "String",
+    "value": "\"@appsetting('OKTA_CLIENT-ID')\""
+  },
+  "OKTA_TOKEN_URL": {
+    "type": "String",
+    "value": "\"@appsetting('OKTA_URL')\"/oauth2/default/v1/token"
+  },
   "TOPIC_NAME": {
     "type": "String",
     "value": "notification-receive-topic"

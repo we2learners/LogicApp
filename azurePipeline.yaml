@@ -79,6 +79,21 @@ stages:
                     "name": "SERVICE_BUS_CONN_STRING",
                     "value": "@Microsoft.KeyVault(VaultName=blueprint-vault;SecretName=sbconn)",
                     "slotSettings": false
+                  },
+                  {
+                    "name": "OKTA-CLIENT-ID",
+                    "value": "@Microsoft.KeyVault(VaultName=blueprint-vault;SecretName=okta-client-id)",
+                    "slotSettings": false
+                  },
+                  {
+                    "name": "OKTA-CLIENT-SECRET",
+                    "value": "@Microsoft.KeyVault(VaultName=blueprint-vault;SecretName=okta-client-secret)",
+                    "slotSettings": false
+                  },
+                  {
+                    "name": "OKTA-URL",
+                    "value": "https://dev-98237100.okta.com/",
+                    "slotSettings": false
                   }
                 ]
 

@@ -20,7 +20,7 @@
                 },
                 "runAfter": {}
             },
-            "HTTP": {
+            "APIM": {
                 "type": "Http",
                 "inputs": {
                     "method": "POST",
@@ -30,6 +30,30 @@
                         "Content-Type": "application/json"
                     },
                     "body": "@body('Parse_JSON')"
+                },
+                "runAfter": {
+                    "OKTA_ACCESS_TOKEN": [
+                        "Succeeded"
+                    ]
+                }
+            },
+            "OKTA_ACCESS_TOKEN": {
+                "type": "Http",
+                "inputs": {
+                    "method": "POST",
+                    "uri": "@parameters('OKTA_TOKEN_URL')",
+                    "headers": {
+                        "accept": "application/json",
+                        "content-type": "application/x-www-form-urlencoded",
+                        "cache-control": "no-cache",
+                        "Authorization": "Basic @{parameters('OKTA_USER')}:@{parameters('OKTA_PASSWORD')}"
+                    },
+                    "body": "'{\"grant_type\":\"client_credentials\"}'",
+                    "authentication": {
+                        "type": "Basic",
+                        "username": "@parameters('OKTA_USER')",
+                        "password": "@parameters('OKTA_PASSWORD')"
+                    }
                 },
                 "runAfter": {
                     "Parse_JSON": [
