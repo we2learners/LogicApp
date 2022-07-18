@@ -1,18 +1,18 @@
 {
   "OKTA_PASSWORD": {
-    "type": "String",
-    "value": "\"@appsetting('OKTA-CLIENT-SECRET')\""
-  },
-  "OKTA_USER": {
-    "type": "String",
-    "value": "\"@appsetting('OKTA-CLIENT-ID')\""
+      "type": "String",
+      "value": "\"@appsetting('OKTA-CLIENT-SECRET')\""
   },
   "OKTA_TOKEN_URL": {
-    "type": "String",
-    "value": "https://dev-98237100.okta.com/oauth2/default/v1/token"
+      "type": "String",
+      "value": "https://dev-98237100.okta.com/oauth2/default/v1/token"
+  },
+  "OKTA_USER": {
+      "type": "String",
+      "value": "\"@appsetting('OKTA-CLIENT-ID')\""
   },
   "TOPIC_NAME": {
-    "type": "String",
-    "value": "notification-receive-topic"
+      "type": "String",
+      "value": "notification-receive-topic"
   }
 }
