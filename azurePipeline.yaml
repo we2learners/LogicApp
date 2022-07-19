@@ -94,6 +94,11 @@ stages:
                     "name": "OKTA-URL",
                     "value": "https://dev-98237100.okta.com/",
                     "slotSettings": false
+                  },
+                  {
+                    "name": "NOTIFICATION_CREATE_API_ENDPOINT",
+                    "value": "https://blueprintapi.azure-api.net/sp/create",
+                    "slotSettings": false
                   }
                 ]
 

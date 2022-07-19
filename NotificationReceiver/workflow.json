@@ -6,59 +6,43 @@
                 "type": "Http",
                 "inputs": {
                     "method": "POST",
-                    "uri": "https://blueprintapi.azure-api.net/sp/create",
+                    "uri": "@{parameters('NotificationCreateAPIEndpoint')}",
                     "headers": {
                         "Content-Type": "application/json",
-                        "accept": "application/json"
+                        "accept": "application/json",
+                        "authorization": "Bearer @{body('Parse_Access_Token')?['accessToken']}"
                     },
-                    "body": "@body('Parse_JSON')"
+                    "body": "@body('Parse_Notification_Message')"
                 },
                 "runAfter": {
-                    "OKTA_ACCESS_TOKEN": [
+                    "Parse_Access_Token": [
                         "Succeeded"
                     ]
                 }
             },
-            "Initialize_Okta_Code_in_Base_64": {
-                "type": "InitializeVariable",
-                "inputs": {
-                    "variables": [
-                        {
-                            "name": "authCodeBase64",
-                            "type": "string"
-                        }
-                    ]
-                },
+            "Base64_Okta_Basic_Auth_Params": {
+                "type": "Compose",
+                "inputs": "@base64(outputs('Okta_Basic_Auth_Params'))",
                 "runAfter": {
-                    "Initialize_variable": [
+                    "Okta_Basic_Auth_Params": [
                         "Succeeded"
                     ]
-                }
-            },
-            "Initialize_variable": {
-                "type": "InitializeVariable",
-                "inputs": {
-                    "variables": [
-                        {
-                            "name": "oktaAuthCode",
-                            "type": "string",
-                            "value": "@{appsetting('OKTA-CLIENT-ID')}:@{appsetting('OKTA-CLIENT-SECRET')}"
-                        }
-                    ]
                 },
-                "runAfter": {
-                    "Parse_JSON": [
-                        "Succeeded"
-                    ]
+                "runtimeConfiguration": {
+                    "secureData": {
+                        "properties": [
+                            "inputs"
+                        ]
+                    }
                 }
             },
             "OKTA_ACCESS_TOKEN": {
                 "type": "Http",
                 "inputs": {
                     "method": "POST",
-                    "uri": "@parameters('OKTA_TOKEN_URL')",
+                    "uri": "@{parameters('OktaTokenUrl')}",
                     "headers": {
-                        "Authorization": "Basic @{variables('authCodeBase64')}",
+                        "Authorization": "Basic @{outputs('Base64_Okta_Basic_Auth_Params')}",
                         "accept": "application/json",
                         "cache-control": "no-cache",
                         "content-type": "application/x-www-form-urlencoded"
@@ -69,12 +53,54 @@
                     "body": "'{\"grant_type\":\"client_credentials\"}'"
                 },
                 "runAfter": {
-                    "Set_variable": [
+                    "Base64_Okta_Basic_Auth_Params": [
                         "Succeeded"
                     ]
                 }
             },
-            "Parse_JSON": {
+            "Okta_Basic_Auth_Params": {
+                "type": "Compose",
+                "inputs": "@{appsetting('OKTA-CLIENT-ID')}:@{appsetting('OKTA-CLIENT-SECRET')}",
+                "runAfter": {
+                    "Parse_Notification_Message": [
+                        "Succeeded"
+                    ]
+                },
+                "runtimeConfiguration": {
+                    "secureData": {
+                        "properties": [
+                            "inputs"
+                        ]
+                    }
+                }
+            },
+            "Parse_Access_Token": {
+                "type": "ParseJson",
+                "inputs": {
+                    "content": "@body('OKTA_ACCESS_TOKEN')",
+                    "schema": {
+                        "properties": {
+                            "accessToken": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "runAfter": {
+                    "OKTA_ACCESS_TOKEN": [
+                        "Succeeded"
+                    ]
+                },
+                "runtimeConfiguration": {
+                    "secureData": {
+                        "properties": [
+                            "inputs"
+                        ]
+                    }
+                }
+            },
+            "Parse_Notification_Message": {
                 "type": "ParseJson",
                 "inputs": {
                     "content": "@triggerOutputs()?['body']?['contentData']",
@@ -91,18 +117,6 @@
                     }
                 },
                 "runAfter": {}
-            },
-            "Set_variable": {
-                "type": "SetVariable",
-                "inputs": {
-                    "name": "authCodeBase64",
-                    "value": "@{base64(variables('oktaAuthCode'))}"
-                },
-                "runAfter": {
-                    "Initialize_Okta_Code_in_Base_64": [
-                        "Succeeded"
-                    ]
-                }
             }
         },
         "triggers": {
@@ -110,7 +124,7 @@
                 "type": "ServiceProvider",
                 "inputs": {
                     "parameters": {
-                        "topicName": "@parameters('TOPIC_NAME')",
+                        "topicName": "@parameters('TopicName')",
                         "subscriptionName": "logicapp",
                         "isSessionsEnabled": false
                     },

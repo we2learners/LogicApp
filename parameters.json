@@ -1,17 +1,13 @@
 {
-  "OKTA_PASSWORD": {
+  "NotificationCreateAPIEndpoint": {
     "type": "String",
-    "value": "\"@appsetting('OKTA-CLIENT-SECRET')\""
+    "value": "\"@appsetting('NOTIFICATION_CREATE_API_ENDPOINT')\""
   },
-  "OKTA_TOKEN_URL": {
+  "OktaTokenUrl": {
     "type": "String",
     "value": "https://dev-98237100.okta.com/oauth2/default/v1/token"
   },
-  "OKTA_USER": {
-    "type": "String",
-    "value": "\"@appsetting('OKTA-CLIENT-ID')\""
-  },
-  "TOPIC_NAME": {
+  "TopicName": {
     "type": "String",
     "value": "notification-receive-topic"
   }
