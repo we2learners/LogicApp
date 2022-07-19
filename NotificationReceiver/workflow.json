@@ -3,23 +3,24 @@
         "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
         "actions": {
             "APIM": {
+                "type": "Http",
                 "inputs": {
-                    "body": "@body('Parse_JSON')",
+                    "method": "POST",
+                    "uri": "https://blueprintapi.azure-api.net/sp/create",
                     "headers": {
                         "Content-Type": "application/json",
                         "accept": "application/json"
                     },
-                    "method": "POST",
-                    "uri": "https://blueprintapi.azure-api.net/sp/create"
+                    "body": "@body('Parse_JSON')"
                 },
                 "runAfter": {
                     "OKTA_ACCESS_TOKEN": [
                         "Succeeded"
                     ]
-                },
-                "type": "Http"
+                }
             },
             "Initialize_Okta_Code_in_Base_64": {
+                "type": "InitializeVariable",
                 "inputs": {
                     "variables": [
                         {
@@ -32,10 +33,10 @@
                     "Initialize_variable": [
                         "Succeeded"
                     ]
-                },
-                "type": "InitializeVariable"
+                }
             },
             "Initialize_variable": {
+                "type": "InitializeVariable",
                 "inputs": {
                     "variables": [
                         {
@@ -49,32 +50,32 @@
                     "Parse_JSON": [
                         "Succeeded"
                     ]
-                },
-                "type": "InitializeVariable"
+                }
             },
             "OKTA_ACCESS_TOKEN": {
+                "type": "Http",
                 "inputs": {
-                    "body": "'{\"grant_type\":\"client_credentials\"}'",
+                    "method": "POST",
+                    "uri": "@parameters('OKTA_TOKEN_URL')",
                     "headers": {
                         "Authorization": "Basic @{variables('authCodeBase64')}",
                         "accept": "application/json",
                         "cache-control": "no-cache",
                         "content-type": "application/x-www-form-urlencoded"
                     },
-                    "method": "POST",
                     "queries": {
                         "grant_type": "client_credentials"
                     },
-                    "uri": "@parameters('OKTA_TOKEN_URL')"
+                    "body": "'{\"grant_type\":\"client_credentials\"}'"
                 },
                 "runAfter": {
                     "Set_variable": [
                         "Succeeded"
                     ]
-                },
-                "type": "Http"
+                }
             },
             "Parse_JSON": {
+                "type": "ParseJson",
                 "inputs": {
                     "content": "@triggerOutputs()?['body']?['contentData']",
                     "schema": {
@@ -89,10 +90,10 @@
                         "type": "object"
                     }
                 },
-                "runAfter": {},
-                "type": "ParseJson"
+                "runAfter": {}
             },
             "Set_variable": {
+                "type": "SetVariable",
                 "inputs": {
                     "name": "authCodeBase64",
                     "value": "@{base64(variables('oktaAuthCode'))}"
@@ -101,19 +102,17 @@
                     "Initialize_Okta_Code_in_Base_64": [
                         "Succeeded"
                     ]
-                },
-                "type": "SetVariable"
+                }
             }
         },
-        "contentVersion": "1.0.0.0",
-        "outputs": {},
         "triggers": {
             "When_messages_are_available_in_a_topic_subscription": {
+                "type": "ServiceProvider",
                 "inputs": {
                     "parameters": {
-                        "isSessionsEnabled": false,
+                        "topicName": "@parameters('TOPIC_NAME')",
                         "subscriptionName": "logicapp",
-                        "topicName": "@parameters('TOPIC_NAME')"
+                        "isSessionsEnabled": false
                     },
                     "serviceProviderConfiguration": {
                         "connectionName": "serviceBus",
@@ -121,10 +120,11 @@
                         "serviceProviderId": "/serviceProviders/serviceBus"
                     }
                 },
-                "splitOn": "@triggerOutputs()?['body']",
-                "type": "ServiceProvider"
+                "splitOn": "@triggerOutputs()?['body']"
             }
-        }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {}
     },
     "kind": "Stateful"
 }
