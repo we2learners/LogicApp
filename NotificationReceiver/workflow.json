@@ -6,7 +6,7 @@
                 "type": "Http",
                 "inputs": {
                     "method": "POST",
-                    "uri": "@{parameters('NotificationCreateAPIEndpoint')}",
+                    "uri": "@{appsetting('NOTIFICATION-CREATE-API-ENDPOINT')}",
                     "headers": {
                         "Content-Type": "application/json",
                         "accept": "application/json",
@@ -40,7 +40,7 @@
                 "type": "Http",
                 "inputs": {
                     "method": "POST",
-                    "uri": "@{parameters('OktaTokenUrl')}",
+                    "uri": "@{appsetting('OKTA-TOKEN-ENDPOINT')}",
                     "headers": {
                         "Authorization": "Basic @{outputs('Base64_Okta_Basic_Auth_Params')}",
                         "accept": "application/json",

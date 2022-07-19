@@ -1,12 +1,4 @@
 {
-  "NotificationCreateAPIEndpoint": {
-    "type": "String",
-    "value": "\"@appsetting('NOTIFICATION_CREATE_API_ENDPOINT')\""
-  },
-  "OktaTokenUrl": {
-    "type": "String",
-    "value": "https://dev-98237100.okta.com/oauth2/default/v1/token"
-  },
   "TopicName": {
     "type": "String",
     "value": "notification-receive-topic"

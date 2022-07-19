@@ -76,7 +76,7 @@ stages:
               appSettings: |
                 [
                   {
-                    "name": "SERVICE_BUS_CONN_STRING",
+                    "name": "SERVICE-BUS-CONN-STRING",
                     "value": "@Microsoft.KeyVault(VaultName=blueprint-vault;SecretName=sbconn)",
                     "slotSettings": false
                   },
@@ -96,8 +96,13 @@ stages:
                     "slotSettings": false
                   },
                   {
-                    "name": "NOTIFICATION_CREATE_API_ENDPOINT",
+                    "name": "NOTIFICATION-CREATE-API-ENDPOINT",
                     "value": "https://blueprintapi.azure-api.net/sp/create",
+                    "slotSettings": false
+                  },
+                  {
+                    "name": "OKTA-TOKEN-ENDPOINT",
+                    "value": "https://dev-98237100.okta.com/oauth2/default/v1/token"",
                     "slotSettings": false
                   }
                 ]
