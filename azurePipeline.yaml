@@ -102,7 +102,7 @@ stages:
                   },
                   {
                     "name": "OKTA-TOKEN-ENDPOINT",
-                    "value": "https://dev-98237100.okta.com/oauth2/default/v1/token"",
+                    "value": "https://dev-98237100.okta.com/oauth2/default/v1/token",
                     "slotSettings": false
                   }
                 ]
